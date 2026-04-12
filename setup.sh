@@ -22,52 +22,51 @@ echo -e "${BLUE}=======================================================${NC}"
 # 1. Install System Dependencies
 echo -e "\n${GREEN}[1/5] Installing system dependencies...${NC}"
 # Detect package manager
-if command -v apt-get &>/dev/null; then
-    sudo apt-get update
-    sudo apt-get install -y \
-        build-essential \
-        git \
-        wget \
-        curl \
-        python3 \
-        python3-pip \
-        libncurses5-dev \
-        gawk \
-        gettext \
-        unzip \
-        file \
-        libssl-dev \
-        rsync \
-        u-boot-tools \
-        podman \
-        qemu-system-misc \
-        qemu-user-static \
-        bc \
-        cpio
-elif command -v pacman &>/dev/null; then
-    sudo pacman -Syu --needed --noconfirm \
-        base-devel \
-        git \
-        wget \
-        curl \
-        python \
-        python-pip \
-        ncurses \
-        gawk \
-        gettext \
-        unzip \
-        file \
-        openssl \
-        rsync \
-        uboot-tools \
-        podman \
-        qemu-base \
-        qemu-user-static \
-        bc \
-        cpio
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID_LIKE" in
+        *debian*)
+            sudo apt-get update
+            sudo apt-get install -y \
+                autoconf build-essential bc bison ccache cpio cmake curl dialog file flex gawk git \
+                libncurses-dev libusb-1.0-0-dev make m4 nano perl python3 python3-pip python3-jsonschema \
+                rsync unzip u-boot-tools vim-tiny wget whiptail podman qemu-system-misc qemu-user-static
+            ;;
+        *)
+            case "$ID" in
+                ubuntu|debian|linuxmint|zorin)
+                    sudo apt-get update
+                    sudo apt-get install -y \
+                        autoconf build-essential bc bison ccache cpio cmake curl dialog file flex gawk git \
+                        libncurses-dev libusb-1.0-0-dev make m4 nano perl python3 python3-pip python3-jsonschema \
+                        rsync unzip u-boot-tools vim-tiny wget whiptail podman qemu-system-misc qemu-user-static
+                    ;;
+                arch)
+                    sudo pacman -Syu --needed --noconfirm \
+                        autoconf base-devel bc bison cpio cmake curl dialog file flex gawk git \
+                        m4 libnewt libusb make nano ncurses perl python python-pip rsync unzip \
+                        uboot-tools wget podman qemu-base qemu-user-static
+                    ;;
+                fedora|rhel|centos)
+                    sudo dnf install -y \
+                        autoconf gcc m4 make bc bison cpio cmake curl dialog file flex gawk git \
+                        nano ncurses-devel newt libusbx-devel perl rsync unzip uboot-tools wget \
+                        podman qemu-system-x86 qemu-user-static
+                    ;;
+                alpine)
+                    sudo apk add \
+                        autoconf bash build-base bc bison cpio cmake curl dialog file findutils \
+                        flex gawk git grep m4 nano ncurses-dev newt libusb-dev make perl rsync \
+                        unzip uboot-tools wget podman qemu-system-x86_64 qemu-user-static
+                    ;;
+                *)
+                    echo -e "${RED}Warning: Unsupported OS: $ID. Please install dependencies manually.${NC}"
+                    ;;
+            esac
+            ;;
+    esac
 else
-    echo -e "${RED}Warning: Unknown package manager. Please install dependencies manually:${NC}"
-    echo "build-essential, git, wget, curl, python3, ncurses-dev, gawk, gettext, unzip, file, libssl-dev, rsync, u-boot-tools, podman, qemu"
+    echo -e "${RED}Warning: Could not determine the operating system. Please install dependencies manually.${NC}"
 fi
 
 # 2. Create Workspace
