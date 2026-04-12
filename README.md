@@ -21,8 +21,7 @@ The bootstrap process automates:
 
 2. **Run the setup script:**
    ```bash
-   chmod +x *.sh
-   ./setup.sh
+   bash setup.sh
    ```
    *Note: The script will ask for sudo password to install system dependencies.*
 
