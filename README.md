@@ -33,7 +33,7 @@ The bootstrap process automates:
 
 4. **Start developing:**
    ```bash
-   cd ~/thingino-workspace/thingino-firmware
+   cd ~/thingino-workspace/firmware
    make help
    ```
 

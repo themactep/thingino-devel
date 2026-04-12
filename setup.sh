@@ -61,7 +61,7 @@ elif command -v pacman &>/dev/null; then
         rsync \
         uboot-tools \
         podman \
-        qemu-headless \
+        qemu-base \
         qemu-user-static \
         bc \
         cpio
@@ -81,10 +81,10 @@ fi
 
 # 3. Clone Thingino Firmware
 echo -e "\n${GREEN}[3/5] Cloning thingino-firmware repository...${NC}"
-if [ ! -d "$WORKSPACE_DIR/thingino-firmware" ]; then
-    git clone "$FIRMWARE_REPO" "$WORKSPACE_DIR/thingino-firmware"
+if [ ! -d "$WORKSPACE_DIR/firmware" ]; then
+    git clone "$FIRMWARE_REPO" "$WORKSPACE_DIR/firmware"
 else
-    echo "thingino-firmware already exists in workspace. Skipping clone."
+    echo "firmware directory already exists in workspace. Skipping clone."
 fi
 
 # 4. Bootstrap Toolchains
@@ -111,3 +111,4 @@ echo -e "  1. source ~/.thingino_config"
 echo -e "  2. cd ${WORKSPACE_DIR}/thingino-firmware"
 echo -e "  3. make help"
 echo -e "${BLUE}=======================================================${NC}"
+=${NC}"
