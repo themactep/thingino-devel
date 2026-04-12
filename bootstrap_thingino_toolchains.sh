@@ -77,10 +77,3 @@ echo "All toolchains processed."
 echo "Location: ${INSTALL_BASE}"
 echo "-------------------------------------------------------"
 
-if [ -f "./select_toolchain.sh" ]; then
-    ./select_toolchain.sh
-else
-    echo "To use a toolchain in your project, set your cross compiler path, e.g.:"
-    echo "export CROSS_COMPILE=${INSTALL_BASE}/mipsel-thingino-linux-${GCC_VER}-musl-xburst1/bin/mipsel-linux-"
-fi
-echo "-------------------------------------------------------"
