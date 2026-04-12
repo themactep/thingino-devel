@@ -1,0 +1,4 @@
+*.log
+.thingino_config
+/opt/toolchains/
+/thingino-workspace/
