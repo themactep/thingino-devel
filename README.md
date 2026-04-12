@@ -40,7 +40,9 @@ The bootstrap process automates:
 ## Included Tools
 
 - `setup.sh`: The main entry point that orchestrates the entire setup.
-- `bootstrap_thingino_toolchains.sh`: Downloads and installs pre-built toolchains to `~/opt/toolchains`.
+- `install_deps.sh`: Installs required system packages for different Linux distributions.
+- `bootstrap_thingino_toolchains.sh`: Downloads and installs pre-built toolchains to `~/thingino-workspace/toolchains`.
+
 - `select_toolchain.sh`: Interactive script to switch between different toolchain variants (XBurst1 vs XBurst2, different C libraries).
 
 ## Dependencies
