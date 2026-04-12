@@ -29,6 +29,7 @@ The bootstrap process automates:
    ```bash
    source ~/.thingino_config
    ```
+   *Note: During setup, you can choose to have this added to your `.bashrc` or `.zshrc` automatically for future sessions.*
 
 4. **Start developing:**
    ```bash

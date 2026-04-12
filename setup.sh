@@ -102,6 +102,30 @@ if [ -f "./select_toolchain.sh" ]; then
     bash ./select_toolchain.sh
 fi
 
+# Add to shell profile
+echo -e "\nWould you like to automatically source ~/.thingino_config in your shell profile? (y/n)"
+read -r add_to_profile
+if [[ "$add_to_profile" =~ ^[Yy]$ ]]; then
+    SHELL_RC=""
+    if [ -n "$ZSH_VERSION" ] || [ -f "$HOME/.zshrc" ]; then
+        SHELL_RC="$HOME/.zshrc"
+    elif [ -n "$BASH_VERSION" ] || [ -f "$HOME/.bashrc" ]; then
+        SHELL_RC="$HOME/.bashrc"
+    fi
+
+    if [ -n "$SHELL_RC" ]; then
+        if ! grep -q "source ~/.thingino_config" "$SHELL_RC"; then
+            echo -e "\n# Thingino environment" >> "$SHELL_RC"
+            echo "[[ -f ~/.thingino_config ]] && source ~/.thingino_config" >> "$SHELL_RC"
+            echo -e "${GREEN}Added to $SHELL_RC${NC}"
+        else
+            echo -e "Already exists in $SHELL_RC"
+        fi
+    else
+        echo -e "${RED}Could not find .bashrc or .zshrc. Please add 'source ~/.thingino_config' manually.${NC}"
+    fi
+fi
+
 echo -e "\n${BLUE}=======================================================${NC}"
 echo -e "${GREEN}Setup Complete!${NC}"
 echo -e "Your workspace is at: ${WORKSPACE_DIR}"
