@@ -89,7 +89,11 @@ echo -e "\n${BLUE}=======================================================${NC}"
 echo -e "${GREEN}Setup Complete!${NC}"
 echo -e "Your workspace is at: ${WORKSPACE_DIR}"
 echo -e "To start developing:"
-echo -e "  1. source ~/.thingino_config"
+if [[ "$add_to_profile" =~ ^[Yy]$ ]]; then
+    echo -e "  1. source ~/.thingino_config (only for this shell; automatic in future)"
+else
+    echo -e "  1. source ~/.thingino_config"
+fi
 echo -e "  2. cd ${WORKSPACE_DIR}/firmware"
 echo -e "  3. make help"
 echo -e "${BLUE}=======================================================${NC}"
