@@ -55,6 +55,6 @@ The `setup.sh` script supports `apt` (Debian/Ubuntu) and `pacman` (Arch Linux) a
 
 ## Directory Structure
 
-- `~/thingino-workspace/`: Default location for source code.
-- `~/opt/toolchains/`: Location where toolchains are installed.
+- `~/thingino-workspace/`: Default location for source code and toolchains.
+- `~/thingino-workspace/toolchains/`: Location where toolchains are installed.
 - `~/.thingino_config`: Shell script snippet containing exported environment variables.

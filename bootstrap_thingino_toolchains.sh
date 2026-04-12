@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-INSTALL_BASE="${HOME}/opt/toolchains"
+INSTALL_BASE="${INSTALL_BASE:-${HOME}/thingino-workspace/toolchains}"
 GITHUB_REPO="themactep/thingino-firmware"
 RELEASE_TAG="toolchain-x86_64"
 

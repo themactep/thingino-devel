@@ -7,7 +7,7 @@ set -e
 # --- Configuration ---
 WORKSPACE_DIR="${HOME}/thingino-workspace"
 FIRMWARE_REPO="https://github.com/themactep/thingino-firmware.git"
-INSTALL_BASE="${HOME}/opt/toolchains"
+INSTALL_BASE="${WORKSPACE_DIR}/toolchains"
 
 # Colors for output
 RED='\033[0;31m'

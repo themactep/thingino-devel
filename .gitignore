@@ -1,4 +1,6 @@
 *.log
 .thingino_config
-/opt/toolchains/
-/thingino-workspace/
+# Since we are installing into the workspace which is likely outside this repo,
+# but if it's inside, we should ignore it.
+toolchains/
+thingino-workspace/

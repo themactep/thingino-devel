@@ -2,7 +2,7 @@
 # Toolchain selector for Thingino development
 # Saves selection to ~/.thingino_config
 
-INSTALL_BASE="${HOME}/opt/toolchains"
+INSTALL_BASE="${INSTALL_BASE:-${HOME}/thingino-workspace/toolchains}"
 CONFIG_FILE="${HOME}/.thingino_config"
 
 if [ ! -d "$INSTALL_BASE" ]; then
