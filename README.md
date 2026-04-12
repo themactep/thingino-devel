@@ -15,7 +15,7 @@ The bootstrap process automates:
 
 1. **Clone this repository:**
    ```bash
-   git clone <this-repo-url> thingino-devel
+   git clone https://github.com/themactep/thingino-devel
    cd thingino-devel
    ```
 
