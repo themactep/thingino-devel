@@ -38,9 +38,9 @@ else
 fi
 
 # 3. Clone Thingino Firmware
-echo -e "\n${GREEN}[3/5] Cloning thingino-firmware repository...${NC}"
+echo -e "\n${GREEN}[3/5] Cloning thingino-firmware repository with submodules...${NC}"
 if [ ! -d "$WORKSPACE_DIR/firmware" ]; then
-    git clone "$FIRMWARE_REPO" "$WORKSPACE_DIR/firmware"
+    git clone --recursive "$FIRMWARE_REPO" "$WORKSPACE_DIR/firmware"
 else
     echo "firmware directory already exists in workspace. Skipping clone."
 fi
