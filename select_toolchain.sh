@@ -248,6 +248,24 @@ echo "Active: $(basename "$SELECTED_ROOT")"
 # Save to global config
 echo "export THINGINO_TOOLCHAIN=\"$SELECTED_ROOT\"" > "$CONFIG_FILE"
 echo "export CROSS_COMPILE=\"$CROSS_COMPILE_PREFIX\"" >> "$CONFIG_FILE"
+cat >> "$CONFIG_FILE" <<'EOF'
+
+# Thingino-scoped history sync so commands appended by child processes
+# become visible in interactive history on the next prompt.
+if [ -n "${BASH_VERSION:-}" ]; then
+    shopt -s histappend
+    case ";${PROMPT_COMMAND:-};" in
+        *";history -a;"*) ;;
+        *) PROMPT_COMMAND="history -a; ${PROMPT_COMMAND:-}" ;;
+    esac
+    case ";${PROMPT_COMMAND:-};" in
+        *";history -n;"*) ;;
+        *) PROMPT_COMMAND="history -n; ${PROMPT_COMMAND:-}" ;;
+    esac
+elif [ -n "${ZSH_VERSION:-}" ]; then
+    setopt INC_APPEND_HISTORY SHARE_HISTORY
+fi
+EOF
 
 echo "Configuration saved to $CONFIG_FILE"
 echo "To activate in current shell: source $CONFIG_FILE"
