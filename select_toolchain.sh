@@ -179,25 +179,75 @@ unset IFS
 echo "Available toolchains:"
 for i in "${!TOOLCHAINS[@]}"; do
     name=$(basename "${TOOLCHAINS[$i]}")
-    echo "  [$i] $name"
+    echo "  [$((i + 1))] $name"
 done
 
-read -p "Select active toolchain [0-$((${#TOOLCHAINS[@]} - 1))]: " choice
+read -p "Select toolchain(s) [0=all, 1-${#TOOLCHAINS[@]}, space-separated]: " choice
+read -r -a selections <<< "$choice"
 
-if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -lt "${#TOOLCHAINS[@]}" ]; then
-    SELECTED_ROOT="${TOOLCHAINS[$choice]}"
-    CROSS_COMPILE_PREFIX="${SELECTED_ROOT}/bin/mipsel-linux-"
-    
-    echo "Selected: $(basename "$SELECTED_ROOT")"
-    check_and_refresh_toolchain "$SELECTED_ROOT"
-    
-    # Save to global config
-    echo "export THINGINO_TOOLCHAIN=\"$SELECTED_ROOT\"" > "$CONFIG_FILE"
-    echo "export CROSS_COMPILE=\"$CROSS_COMPILE_PREFIX\"" >> "$CONFIG_FILE"
-    
-    echo "Configuration saved to $CONFIG_FILE"
-    echo "To activate in current shell: source $CONFIG_FILE"
-else
+if [ ${#selections[@]} -eq 0 ]; then
     echo "Invalid selection."
     exit 1
 fi
+
+selected_indices=()
+contains_all=0
+active_index=-1
+
+for sel in "${selections[@]}"; do
+    if ! [[ "$sel" =~ ^[0-9]+$ ]]; then
+        echo "Invalid selection."
+        exit 1
+    fi
+
+    if [ "$sel" -eq 0 ]; then
+        contains_all=1
+        active_index=0
+        continue
+    fi
+
+    if [ "$sel" -lt 1 ] || [ "$sel" -gt "${#TOOLCHAINS[@]}" ]; then
+        echo "Invalid selection."
+        exit 1
+    fi
+
+    idx=$((sel - 1))
+    if [[ ! " ${selected_indices[*]} " =~ " ${idx} " ]]; then
+        selected_indices+=("$idx")
+    fi
+    active_index="$idx"
+done
+
+if [ "$contains_all" -eq 1 ]; then
+    if [ ${#selections[@]} -gt 1 ]; then
+        echo "Invalid selection."
+        exit 1
+    fi
+    selected_indices=()
+    for i in "${!TOOLCHAINS[@]}"; do
+        selected_indices+=("$i")
+    done
+fi
+
+if [ ${#selected_indices[@]} -eq 0 ]; then
+    echo "Invalid selection."
+    exit 1
+fi
+
+for idx in "${selected_indices[@]}"; do
+    root="${TOOLCHAINS[$idx]}"
+    echo "Processing: $(basename "$root")"
+    check_and_refresh_toolchain "$root"
+done
+
+SELECTED_ROOT="${TOOLCHAINS[$active_index]}"
+CROSS_COMPILE_PREFIX="${SELECTED_ROOT}/bin/mipsel-linux-"
+
+echo "Active: $(basename "$SELECTED_ROOT")"
+
+# Save to global config
+echo "export THINGINO_TOOLCHAIN=\"$SELECTED_ROOT\"" > "$CONFIG_FILE"
+echo "export CROSS_COMPILE=\"$CROSS_COMPILE_PREFIX\"" >> "$CONFIG_FILE"
+
+echo "Configuration saved to $CONFIG_FILE"
+echo "To activate in current shell: source $CONFIG_FILE"
